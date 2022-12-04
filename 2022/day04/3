@@ -1,0 +1,30 @@
+import scala.io.Source
+
+class Interval(l : Int, h : Int) {
+  var l : Int = l
+  var h : Int = h
+
+  def contained(other : Interval) : Bool = {
+    l >= other.l && h <= other.h
+  }
+}
+
+object main {
+  def parse(arg : String) : (Interval, Interval) = {
+    val inter = arg.split(",").map(a => a.split("-"))
+    (Interval(inter(0)(0), inter(0)(1)), Interval(inter(1)(0), inter(1)(1)))
+  }
+
+  def p1(arg : String) : Int = {
+    val intervals = parse(args)
+    if (intervals._1.contains(intervals._0) || intervals._0.contains(intervals._1)) {
+      1
+    } else {
+      0
+    }
+  }
+
+  def main(args : Array[String]) = {
+    println(Source.fromFile("input.txt").getLines().map(p1).sum)
+  }
+}

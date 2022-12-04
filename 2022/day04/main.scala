@@ -1,0 +1,43 @@
+import scala.io.Source
+
+class Interval(lc : Int, hc : Int) {
+  var l : Int = lc
+  var h : Int = hc
+
+  def contains(other : Interval) : Boolean = {
+    l <= other.l && h >= other.h
+  }
+
+  def overlaps(other : Interval) : Boolean = {
+    ((l <= other.h) != (h <= other.l)) || h == other.l
+  }
+}
+
+object main {
+  def parse(arg : String) : (Interval, Interval) = {
+    val inter = arg.split(",").map(a => a.split("-").map(x => x.toInt))
+    (new Interval(inter(0)(0), inter(0)(1)), new Interval(inter(1)(0), inter(1)(1)))
+  }
+
+  def p1(arg : String) : Int = {
+    val intervals = parse(arg)
+    if (intervals._1.contains(intervals._2) || intervals._2.contains(intervals._1)) {
+      1
+    } else {
+      0
+    }
+  }
+  def p2(arg : String) : Int = {
+    val intervals = parse(arg)
+    if (intervals._1.overlaps(intervals._2)) {
+      1
+    } else {
+      0
+    }
+  }
+
+  def main(args : Array[String]) = {
+    println(Source.fromFile("input.txt").getLines().map(p1).sum)
+    println(Source.fromFile("input.txt").getLines().map(p2).sum)
+  }
+}
